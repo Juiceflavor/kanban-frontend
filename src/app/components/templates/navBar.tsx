@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react';
-import { Link } from "react-router-dom";
+import Link from 'next/link';
 import AAncle from "../atoms/aAncle";
 
 const links = [
@@ -18,7 +18,7 @@ export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav>
+    <nav className="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <span className="self-center text-2xl font-semibold whitespace-nowrap">Kanban Board</span>
         <button
@@ -36,9 +36,7 @@ export default function NavBar() {
           <ul className="flex flex-col md:flex-row md:space-x-8 mt-4 md:mt-0 md:text-sm md:font-medium">
             {links.map(x => (
               <li key={x.name}>
-                <Link to={x.href}>
-                  <AAncle>{x.name}</AAncle>
-                </Link>
+                <AAncle>{x.name}</AAncle>
               </li>
             ))}
           </ul>
