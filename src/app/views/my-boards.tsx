@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import Sortable, { SortableEvent } from 'sortablejs';
+import Sortable from 'sortablejs';
+import { fetchData } from '@/app/utils/apiConfig';
 
 interface Board {
   id: number;
@@ -25,10 +25,10 @@ const MyBoards = () => {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/boards`);
-        setBoardList(response.data);
+        const response = await fetchData('boards');
+        setBoardList(response.data || []); 
       } catch (error) {
-        console.error('Error fetching boards:', error);
+        console.error('Error loading boards:', error);
       }
     };
 
@@ -57,9 +57,9 @@ const MyBoards = () => {
             {state.name.replace('_', ' ')}
           </h2>
           <div className="space-y-4 overflow-y-auto h-[calc(100%-64px)]"
-          ref={(el) => {
-            columnsRefs.current[index] = el;
-          }}
+            ref={(el) => {
+              columnsRefs.current[index] = el;
+            }}
           >
             {boardList
               .filter((board) => board.statusCode === state.value)
