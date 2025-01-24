@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Sortable from 'sortablejs';
-import { fetchData } from '@/app/utils/apiConfig';
+import { fetchData, transition } from '@/app/utils/apiConfig';
 
 interface Board {
   id: number;
@@ -21,26 +21,68 @@ const states = [
 const MyBoards = () => {
   const [boardList, setBoardList] = useState<Board[]>([]);
   const columnsRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const initialColumnState = useRef<string | null>(null);
+
+  const fetchBoards = async () => {
+    try {
+      const response = await fetchData('boards');
+      setBoardList(response.data || []);
+    } catch (error) {
+      console.error('Error loading boards:', error); //Handle error messages
+    }
+  };
 
   useEffect(() => {
-    const fetchBoards = async () => {
-      try {
-        const response = await fetchData('boards');
-        setBoardList(response.data || []); 
-      } catch (error) {
-        console.error('Error loading boards:', error);
-      }
-    };
-
     fetchBoards();
   }, []);
 
   useEffect(() => {
+    if (boardList.length === 0) {
+      return;
+    }
+
     columnsRefs.current.forEach((column, index) => {
       if (column) {
         Sortable.create(column, {
           group: 'shared',
           animation: 150,
+          onStart: (event) => {
+            const itemId = event.item?.dataset?.id;
+            const board = boardList.find((board) => board.id === Number(itemId));
+
+            if (board) {
+              initialColumnState.current = board.statusCode;
+            }
+          },
+          onEnd: async (event) => {
+            const itemId = event.item?.dataset?.id;
+            const destinationColumn = event.to;
+            const columnIndex = columnsRefs.current.findIndex((column) => column === destinationColumn);
+
+            if (columnIndex !== -1) {
+              const newStatus = states[columnIndex]?.value;
+              try {
+                if (newStatus !== initialColumnState.current) {
+                  if (newStatus === '000') {
+                    transition('boards', itemId!, 'inactive');
+                  } else if (initialColumnState.current === '000' && newStatus === '001') {
+                    transition('boards', itemId!, 'active');
+                  } else {
+                    transition('boards', itemId!, 'transition');
+                  }
+
+                  fetchBoards();
+                }
+                else {
+                  console.log('The board did not change column.'); //Handle error messages
+                }
+              } catch (error) {
+                console.log('Error updating board status:', error); //Handle error messages
+              }
+            }
+
+            initialColumnState.current = null;
+          }
         });
       }
     });
