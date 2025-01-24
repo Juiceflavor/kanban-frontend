@@ -1,6 +1,6 @@
 'use client';
 import { useState } from "react";
-import AAncle from "../atoms/aAncle";
+import Link from "next/link";
 
 const links = [
   {
@@ -9,20 +9,8 @@ const links = [
   },
   {
     name: "My boards",
-    href: "/my-boards",
-  },
-  {
-    name: "Features",
-    href: "#features",
-  },
-  {
-    name: "How it Works",
-    href: "#how-it-works",
-  },
-  {
-    name: "Docs",
-    href: "#docs",
-  },
+    href: "/views/my-boards",
+  }
 ];
 
 export default function NavBar() {
@@ -59,12 +47,12 @@ export default function NavBar() {
           <ul className="flex flex-col md:flex-row md:space-x-8 md:items-center text-white">
             {links.map((link) => (
               <li key={link.name}>
-                <AAncle
+                <Link
                   href={link.href}
                   className="block py-2 px-4 md:inline hover:underline"
                 >
                   {link.name}
-                </AAncle>
+                </Link>
               </li>
             ))}
           </ul>

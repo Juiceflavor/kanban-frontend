@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "title": "Primer tablero",
+        "description": "Primer tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 2,
+        "title": "Segundo tablero",
+        "description": "Segundo tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 3,
+        "title": "Tercero tablero",
+        "description": "Tercero tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 4,
+        "title": "Cuarto tablero",
+        "description": "Cuarto tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 5,
+        "title": "Quinto tablero",
+        "description": "Quinto tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 6,
+        "title": "Sexto tablero",
+        "description": "Sexto tablero",
+        "statusCode": "001"
+    },
+    {
+        "id": 7,
+        "title": "Septimo tablero",
+        "description": "Septimo tablero",
+        "statusCode": "001"
+    }
+]
